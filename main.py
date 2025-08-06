@@ -8,6 +8,7 @@ IPV4 = '169.254.0.2'
 # To activate debugging option. Creates system-log file and logs there
 SM15K.activateDebugLogger = True 
 
+# To use the DeltaElektronika library.
 # To use colorful printing at console.
 ColorPrint = SM15K.ColorPrinter()
 ColorPrint.printFeedback(message="Your message to print to console as feedback!")
