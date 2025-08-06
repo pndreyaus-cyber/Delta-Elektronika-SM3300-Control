@@ -1,5 +1,6 @@
 from DeltaElektronika import SM15K
 import time
+import datetime
 
 # IP Address of the power supply, can be obtain the device itself.
 IPV4 = '169.254.0.2' 
@@ -19,42 +20,32 @@ ColorPrint.printColorful(message="Your message to print to console as colorful!"
 # To use all comments for SM15K
 MyDelta = SM15K.SM15K(IPV4=IPV4)
 
-# Source related comments
-#MyDelta.source."SourceRelatedComments"()
 
 MyDelta.system.setProgSourceV(src="eth")
 MyDelta.system.setProgSourceI(src="eth")
 
-MyDelta.source.SetCurrent(current=20)
-MyDelta.source.ReadCurrentSet()
-MyDelta.source.SetVoltage(voltage=20)
-MyDelta.source.ReadVoltageSet()
 
-
-# Measure related comments
-#MyDelta.measure."MeasureRelatedComments"()
-#MyDelta.measure.MeasurePower()
-#MyDelta.measure.SetAhMeasurementState(setting="ON")
-
-# Output related comments
-#MyDelta.output."OutputRelatedComments"()
-MyDelta.output.ReadOutputSet()
+MyDelta.source.SetCurrent(current=10)
+MyDelta.source.SetVoltage(voltage=5)
 MyDelta.output.SetOutput(setting="ON")
 
-# System related comments
-#MyDelta.system."SystemRelatedComments"()
-#MyDelta.system.ReadWatchdogSet()
-#MyDelta.system.SetPowerLimit(powerlimit=2000, setting="ON")
+# Wait for the output to stabilize
+time.sleep(2)
 
-# Shutdown related comments
-#MyDelta.shutdown."ShutdownRelatedComments"()
-time.sleep(60) # Wait for 60 seconds to allow the system to stabilize
-cnt = 0
-while cnt < 60:
-    print(f"Measured voltage: {MyDelta.measure.MeasureVoltage()}")
-    print(f"Measured current: {MyDelta.measure.MeasureCurrent()}")
-    time.sleep(1)
-    cnt += 1
+# Read the current and voltage values
+ColorPrint.printNormal(message=f'Set output: {MyDelta.output.ReadOutputSet()}')
+ColorPrint.printNormal(message=f'Set output current: {MyDelta.source.ReadCurrentSet()}A')
+ColorPrint.printNormal(message=f'Set output voltage: {MyDelta.source.ReadVoltageSet()}V')
+
+log_filename = "output_log.txt"
+with open(log_filename, "w") as log_file:
+    log_file.write("timestamp,voltage,current\n")
+    for i in range(6):  # 6 times, every 10 seconds for 1 minute
+        timestamp = datetime.datetime.now().isoformat()
+        voltage = MyDelta.measure.MeasureVoltage()
+        current = MyDelta.measure.MeasureCurrent()
+        log_file.write(f"{timestamp},{voltage},{current}\n")
+        time.sleep(10)
 
 
 MyDelta.shutdown.limitShutdownValues()
