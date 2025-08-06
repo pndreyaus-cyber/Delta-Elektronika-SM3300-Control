@@ -49,5 +49,6 @@ with open(log_filename, "w") as log_file:
         time.sleep(10)
 
 
-MyDelta.shutdown.limitShutdownValues()
+ColorPrint.printNormal("Shutting down")
+
 MyDelta.shutdown.setShutdownOutput()
