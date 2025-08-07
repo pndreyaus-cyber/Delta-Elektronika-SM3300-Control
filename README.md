@@ -22,7 +22,7 @@ To switch between programming sources I used the LCD monitor of the power supply
 
 I tried 3 modes: “front”, “web”, “eth”.
 
-## front
+### front
 
 In this mode you program the power supply using knobs on its front panel.
 
@@ -34,11 +34,11 @@ And if the power supply is in CC (constant current) mode, then the output curren
 
 To be honest I cannot figure out how to select CV or CC mode. The power supply chooses it automatically somehow. I could not find any button. Maybe you will.
 
-## web
+### web
 
 In this mode you program the power supply using web interface. I type in the ip address of the power supply in a web browser and it opens the web interface. I tried the same thing as in “front” mode: set output voltage to 15V and output current to 5A. It works the same as “front” mode. For more information about web interface you can go to the manual.
 
-## eth
+### eth
 
 This mode lets you control the power supply using the TCP/IP protocol. To control the power supply you just send TCP/IP packets to it. Thus you can use any programming language or any tool, that is able to send and receive TCP/IP packets.
 
@@ -54,3 +54,6 @@ Irina wanted to have a program, that has following requirements:
 - Every 10 seconds while the program is working it should write to some file current output voltage and output current.
 
 I am not familiar with socket programming in Python, so i decided not to use the given script, but to find a Python library, which  hides work with sockets. The library: <https://github.com/keklikyusuf/DeltaElektronika>. It is intended to control the SM15K power supply and not the SM3300. But the command set to control these power supplies is the same for the most part. So the main functions, like setting and measuring voltage and current are the same.
+
+## Problem
+So this program kinda works. It correctly set output voltage and current. And correctly measures the output voltage and current. But the value of current is 0. I do not know why, because the electrical circuit is complete (resistor between + and - cords) and the current should be equal to voltage divided by resistance. The same problem occurs with "front" mode. 
